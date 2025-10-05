@@ -149,4 +149,17 @@ async def search(q: str, k: int = 5, db: RealDB = Depends(get_db)):
 async def health():
     return {"status": "ok"}
 
-
+# For development and production compatibility
+if __name__ == "__main__":
+    import uvicorn
+    # Use PORT environment variable (required by Render, Railway, etc.)
+    port = int(os.getenv("PORT", 8000))
+    host = os.getenv("HOST", "0.0.0.0")
+    
+    print(f"🚀 Starting server on {host}:{port}")
+    uvicorn.run(
+        "main:app",
+        host=host,
+        port=port,
+        reload=os.getenv("DEBUG", "false").lower() == "true"
+    )
