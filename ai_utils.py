@@ -8,13 +8,23 @@ from httpx import HTTPStatusError
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from typing import List, Dict, Any
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Initialize sentiment analysis pipeline once globally
-sentiment_pipeline = pipeline("sentiment-analysis")
+model_name = os.getenv("SENTIMENT_MODEL", "distilbert/distilbert-base-uncased-finetuned-sst-2-english")
+device = -1 if os.getenv("AI_DEVICE", "cpu").lower() == "cpu" else 0
+sentiment_pipeline = pipeline("sentiment-analysis", model=model_name, device=device)
 
 # Read OpenRouter API key and endpoint from environment
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
+
+# Configuration from environment
+MAX_SEARCH_RESULTS = int(os.getenv("MAX_SEARCH_RESULTS", "20"))
+SIMILARITY_THRESHOLD = float(os.getenv("SIMILARITY_THRESHOLD", "0.1"))
 
 
 def analyze_sentiment(text):
@@ -129,20 +139,24 @@ async def suggest_reply_async(review_text, sentiment, topic):
     return reply, reasoning
 
 
-def find_similar_reviews(query: str, reviews: List[Any], top_k: int = 5) -> List[Dict[str, Any]]:
+def find_similar_reviews(query: str, reviews: List[Any], top_k: int = None) -> List[Dict[str, Any]]:
     """
     Find similar reviews using TF-IDF vectors and cosine similarity.
     
     Args:
         query: Search query string
         reviews: List of review objects or dictionaries
-        top_k: Number of top similar reviews to return (default: 5)
+        top_k: Number of top similar reviews to return (default: from environment)
     
     Returns:
         List of top_k most similar reviews with similarity scores
     """
     if not reviews or not query.strip():
         return []
+    
+    # Use environment variable for top_k if not provided
+    if top_k is None:
+        top_k = MAX_SEARCH_RESULTS
     
     # Convert review objects to dictionaries and extract text
     review_dicts = []
@@ -194,7 +208,7 @@ def find_similar_reviews(query: str, reviews: List[Any], top_k: int = 5) -> List
         # Create results with similarity scores
         scored_reviews = []
         for i, similarity_score in enumerate(similarities):
-            if similarity_score > 0:  # Only include reviews with positive similarity
+            if similarity_score >= SIMILARITY_THRESHOLD:  # Use environment threshold
                 review_with_score = review_dicts[i].copy()
                 review_with_score['similarity_score'] = float(similarity_score)
                 scored_reviews.append(review_with_score)

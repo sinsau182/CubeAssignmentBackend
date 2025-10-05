@@ -3,8 +3,13 @@ from pydantic import BaseModel
 import sqlalchemy
 from sqlalchemy import Table, Column, Integer, String, MetaData
 from databases import Database
+import os
+from dotenv import load_dotenv
 
-DATABASE_URL = "sqlite:///./test.db"
+# Load environment variables
+load_dotenv()
+
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")
 
 # Pydantic model (same as before)
 class Review(BaseModel):

@@ -4,26 +4,35 @@ from pydantic import BaseModel
 from typing import List, Optional
 from database import get_db, RealDB  # Your async DB wrapper class
 from ai_utils import analyze_sentiment, suggest_reply_async, find_similar_reviews
+import os
+from dotenv import load_dotenv
 
-app = FastAPI(title="Multi-location Reviews AI")
+# Load environment variables
+load_dotenv()
+
+app = FastAPI(
+    title="Multi-location Reviews AI",
+    debug=os.getenv("DEBUG", "false").lower() == "true"
+)
+
+# Get CORS origins from environment
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://localhost:3001,http://localhost:5173").split(",")
+allowed_origins.extend([
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3001", 
+    "http://127.0.0.1:5173"
+])
 
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:3001",
-        "http://127.0.0.1:3001",
-        "http://localhost:5173",  # Vite default port
-        "http://127.0.0.1:5173",
-    ],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-API_KEY = "your-api-key"  # replace with env or config
+API_KEY = os.getenv("API_KEY", "your-api-key")
 
 def check_api_key(x_api_key: str = Header(...)):
     if x_api_key != API_KEY:
