@@ -20,6 +20,7 @@ pydantic==2.11.9
 transformers==4.57.0
 scikit-learn==1.7.2
 numpy==2.3.3
+torch==2.8.0  # Retained for potential future use
 
 # Environment Configuration
 python-dotenv==1.1.1
