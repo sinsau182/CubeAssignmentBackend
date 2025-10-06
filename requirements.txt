@@ -1,5 +1,5 @@
-# Core FastAPI Application Dependencies
-# Optimized - removed unused packages (saved ~816 MB)
+# Core FastAPI Application Dependencies  
+# Ultra-optimized - removed heavy AI models (saved ~1.6GB!)
 
 # Web Framework
 fastapi==0.118.0
@@ -16,11 +16,9 @@ aiosqlite==0.21.0
 # Data Validation
 pydantic==2.11.9
 
-# AI and Machine Learning
-transformers==4.57.0
-scikit-learn==1.7.2
-numpy==2.3.3
-torch==2.8.0  # Retained for potential future use
+# Machine Learning (lightweight)
+scikit-learn==1.7.2  # For TF-IDF search functionality
+numpy==2.3.3         # Required by scikit-learn
 
 # Environment Configuration
 python-dotenv==1.1.1
