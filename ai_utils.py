@@ -13,19 +13,20 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # PyTorch-based sentiment analysis configuration
-model_name = os.getenv("SENTIMENT_MODEL", "cardiffnlp/twitter-roberta-base-sentiment-latest")
+# Use smallest model for EC2 deployment to avoid download issues
+model_name = os.getenv("SENTIMENT_MODEL", "nlptown/bert-base-multilingual-uncased-sentiment")
 
 try:
-    # Create PyTorch pipeline - using a lightweight RoBERTa model
-    print("🔥 Initializing PyTorch sentiment analysis...")
+    # Use smallest reliable sentiment model first (~67MB instead of 501MB)
+    print("� Initializing PyTorch sentiment analysis (EC2 optimized)...")
     sentiment_pipeline = pipeline(
         "sentiment-analysis", 
-        model=model_name,
+        model=model_name,  # Much smaller model
         return_all_scores=False,
-        device=-1  # Use CPU (set to 0 for GPU if available)
+        device=-1  # Use CPU
     )
     print("✅ PyTorch sentiment analysis loaded successfully!")
-    print(f"📦 Model: {model_name}")
+    print(f"📦 Model: {model_name} (~67MB)")
 
 except Exception as e:
     print(f"⚠️ Primary PyTorch model failed, trying fallback...")
