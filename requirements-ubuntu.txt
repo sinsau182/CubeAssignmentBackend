@@ -1,0 +1,29 @@
+# Optimized requirements for Ubuntu deployment
+# Install PyTorch CPU-only first: pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+# Core FastAPI Application
+fastapi==0.118.0
+uvicorn==0.37.0
+
+# HTTP Client
+httpx==0.28.1
+
+# Database
+databases==0.9.0
+sqlalchemy==2.0.43
+aiosqlite==0.21.0
+
+# Data Validation
+pydantic==2.11.9
+
+# Machine Learning (lightweight)
+scikit-learn==1.7.2
+numpy==2.3.3
+
+# AI Sentiment Analysis (CPU-only)
+transformers>=4.53.0
+
+# Environment Configuration
+python-dotenv==1.1.1
+
+# Note: PyTorch is installed separately with CPU-only flag to save space

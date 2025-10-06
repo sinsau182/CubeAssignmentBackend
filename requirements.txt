@@ -1,5 +1,5 @@
 # Core FastAPI Application Dependencies  
-# Ultra-optimized - removed heavy AI models (saved ~1.6GB!)
+# Optimized for deployment - removed unnecessary heavy packages
 
 # Web Framework
 fastapi==0.118.0
@@ -16,13 +16,14 @@ aiosqlite==0.21.0
 # Data Validation
 pydantic==2.11.9
 
-# Machine Learning
+# Machine Learning (lightweight)
 scikit-learn==1.7.2  # For TF-IDF search functionality
 numpy==2.3.3         # Required by scikit-learn
 
-# PyTorch-based AI Sentiment Analysis
-torch>=2.0.0         # PyTorch deep learning framework
-transformers>=4.53.0 # Hugging Face transformers for sentiment models
+# PyTorch-based AI Sentiment Analysis (CPU-only, space optimized)
+# Note: Install CPU version with: pip install torch --index-url https://download.pytorch.org/whl/cpu
+torch>=2.0.0         # PyTorch CPU-only (~200MB vs 2GB GPU version)
+transformers>=4.53.0 # Hugging Face transformers for DistilBERT sentiment model
 
 # Environment Configuration
 python-dotenv==1.1.1
