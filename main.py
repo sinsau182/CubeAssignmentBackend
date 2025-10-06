@@ -20,7 +20,8 @@ allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://loc
 allowed_origins.extend([
     "http://127.0.0.1:3000",
     "http://127.0.0.1:3001", 
-    "http://127.0.0.1:5173"
+    "http://127.0.0.1:5173",
+    "https://cube-assignment-frontend-x9xs.vercel.app"
 ])
 
 # Add CORS middleware
