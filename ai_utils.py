@@ -3,79 +3,48 @@ import httpx
 import asyncio
 import re
 import numpy as np
-# from transformers import pipeline
 from httpx import HTTPStatusError
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from typing import List, Dict, Any
+from transformers import pipeline
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 
+# PyTorch-based sentiment analysis configuration
+model_name = os.getenv("SENTIMENT_MODEL", "cardiffnlp/twitter-roberta-base-sentiment-latest")
 
-# Initialize sentiment analysis with multiple lightweight alternatives
-def create_optimized_sentiment_pipeline():
-    """Create optimized sentiment pipeline - tries multiple lightweight alternatives"""
+try:
+    # Create PyTorch pipeline - using a lightweight RoBERTa model
+    print("🔥 Initializing PyTorch sentiment analysis...")
+    sentiment_pipeline = pipeline(
+        "sentiment-analysis", 
+        model=model_name,
+        return_all_scores=False,
+        device=-1  # Use CPU (set to 0 for GPU if available)
+    )
+    print("✅ PyTorch sentiment analysis loaded successfully!")
+    print(f"📦 Model: {model_name}")
+
+except Exception as e:
+    print(f"⚠️ Primary PyTorch model failed, trying fallback...")
     
-    # Option 1: ONNX Runtime (Lightest - ~50MB)
+    # Fallback to a smaller, more reliable PyTorch model
     try:
-        from optimum.onnxruntime import ORTModelForSequenceClassification
-        from transformers import AutoTokenizer, pipeline
+        fallback_model = "distilbert-base-uncased-finetuned-sst-2-english"
+        sentiment_pipeline = pipeline(
+            "sentiment-analysis",
+            model=fallback_model,
+            return_all_scores=False,
+            device=-1
+        )
+        print(f"✅ PyTorch sentiment analysis loaded with fallback model: {fallback_model}")
         
-        print("🚀 Trying ONNX Runtime (lightest option)...")
-        model_name = "microsoft/DialoGPT-medium"  # Much smaller ONNX model
-        tokenizer = AutoTokenizer.from_pretrained(model_name)
-        onnx_model = ORTModelForSequenceClassification.from_pretrained(model_name, from_tf=False)
-        return pipeline("sentiment-analysis", model=onnx_model, tokenizer=tokenizer)
-    except Exception as e1:
-        print(f"⚠️ ONNX failed: {e1}")
-        
-        # Option 2: CPU-only TensorFlow (Medium weight)
-        try:
-            print("🔄 Trying TensorFlow backend...")
-            # Use a smaller TF model
-            tf_model = "cardiffnlp/twitter-roberta-base-sentiment-latest"
-            return pipeline("sentiment-analysis", model=tf_model, framework="tf", device=-1)
-        except Exception as e2:
-            print(f"⚠️ TensorFlow failed: {e2}")
-            
-            # Option 3: Rule-based (Ultra light - no models)
-            print("🪶 Using rule-based sentiment analysis (no AI models)")
-            return create_rule_based_analyzer()
+    except Exception as e2:
+        raise RuntimeError(f"PyTorch sentiment analysis initialization failed: {e2}")
 
-def create_rule_based_analyzer():
-    """Ultra-lightweight rule-based sentiment analysis"""
     
-    positive_words = {
-        'excellent', 'amazing', 'wonderful', 'fantastic', 'great', 'good', 'awesome',
-        'outstanding', 'perfect', 'brilliant', 'superb', 'delicious', 'tasty', 'fresh',
-        'clean', 'friendly', 'helpful', 'fast', 'love', 'recommend', 'satisfied', 'happy'
-    }
-    
-    negative_words = {
-        'terrible', 'awful', 'horrible', 'bad', 'worst', 'disgusting', 'slow', 'dirty',
-        'rude', 'unfriendly', 'cold', 'stale', 'expensive', 'disappointing', 'frustrated',
-        'angry', 'hate', 'poor', 'broken', 'delayed', 'wrong', 'problem'
-    }
-    
-    def analyze(text):
-        words = text.lower().split()
-        pos_score = sum(1 for word in words if word in positive_words)
-        neg_score = sum(1 for word in words if word in negative_words)
-        
-        if pos_score > neg_score:
-            return [{"label": "POSITIVE", "score": 0.8}]
-        elif neg_score > pos_score:
-            return [{"label": "NEGATIVE", "score": 0.8}]
-        else:
-            return [{"label": "NEUTRAL", "score": 0.6}]
-    
-    return analyze
-
-# Initialize with the best available option
-sentiment_pipeline = create_optimized_sentiment_pipeline()
-
 # Read OpenRouter API key and endpoint from environment
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"

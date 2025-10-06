@@ -16,9 +16,13 @@ aiosqlite==0.21.0
 # Data Validation
 pydantic==2.11.9
 
-# Machine Learning (lightweight)
+# Machine Learning
 scikit-learn==1.7.2  # For TF-IDF search functionality
 numpy==2.3.3         # Required by scikit-learn
+
+# PyTorch-based AI Sentiment Analysis
+torch>=2.0.0         # PyTorch deep learning framework
+transformers>=4.53.0 # Hugging Face transformers for sentiment models
 
 # Environment Configuration
 python-dotenv==1.1.1
