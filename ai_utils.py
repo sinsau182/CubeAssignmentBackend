@@ -3,49 +3,21 @@ import httpx
 import asyncio
 import re
 import numpy as np
+from transformers import pipeline
 from httpx import HTTPStatusError
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from typing import List, Dict, Any
-from transformers import pipeline
 from dotenv import load_dotenv
 
+# Load environment variables
 load_dotenv()
 
-# PyTorch-based sentiment analysis configuration
-# Use smallest model for EC2 deployment to avoid download issues
-model_name = os.getenv("SENTIMENT_MODEL", "nlptown/bert-base-multilingual-uncased-sentiment")
+# Initialize sentiment analysis pipeline once globally
+model_name = os.getenv("SENTIMENT_MODEL", "distilbert/distilbert-base-uncased-finetuned-sst-2-english")
+device = -1 if os.getenv("AI_DEVICE", "cpu").lower() == "cpu" else 0
+sentiment_pipeline = pipeline("sentiment-analysis", model=model_name, device=device)
 
-try:
-    # Use smallest reliable sentiment model first (~67MB instead of 501MB)
-    print("� Initializing PyTorch sentiment analysis (EC2 optimized)...")
-    sentiment_pipeline = pipeline(
-        "sentiment-analysis", 
-        model=model_name,  # Much smaller model
-        return_all_scores=False,
-        device=-1  # Use CPU
-    )
-    print("✅ PyTorch sentiment analysis loaded successfully!")
-    print(f"📦 Model: {model_name} (~67MB)")
-
-except Exception as e:
-    print(f"⚠️ Primary PyTorch model failed, trying fallback...")
-    
-    # Fallback to a smaller, more reliable PyTorch model
-    try:
-        fallback_model = "distilbert-base-uncased-finetuned-sst-2-english"
-        sentiment_pipeline = pipeline(
-            "sentiment-analysis",
-            model=fallback_model,
-            return_all_scores=False,
-            device=-1
-        )
-        print(f"✅ PyTorch sentiment analysis loaded with fallback model: {fallback_model}")
-        
-    except Exception as e2:
-        raise RuntimeError(f"PyTorch sentiment analysis initialization failed: {e2}")
-
-    
 # Read OpenRouter API key and endpoint from environment
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
