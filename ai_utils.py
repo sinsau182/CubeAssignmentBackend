@@ -3,7 +3,7 @@ import httpx
 import asyncio
 import re
 import numpy as np
-from transformers import pipeline
+# from transformers import pipeline
 from httpx import HTTPStatusError
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
