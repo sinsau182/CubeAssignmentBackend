@@ -16,7 +16,7 @@ app = FastAPI(
 )
 
 # Get CORS origins from environment
-allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://localhost:3001,http://localhost:5173").split(",")
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://localhost:3001,http://localhost:5173","https://cube-assignment-frontend-x9xs.vercel.app" ).split(",")
 allowed_origins.extend([
     "http://127.0.0.1:3000",
     "http://127.0.0.1:3001", 
