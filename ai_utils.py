@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
+
 # Initialize sentiment analysis with multiple lightweight alternatives
 def create_optimized_sentiment_pipeline():
     """Create optimized sentiment pipeline - tries multiple lightweight alternatives"""
