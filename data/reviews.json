@@ -1,0 +1,142 @@
+[
+  {
+    "id": "100",
+    "location": "NYC",
+    "rating": 4,
+    "text": "Great service and friendly staff!",
+    "date": "2025-10-05"
+  },
+  {
+    "id": "101", 
+    "location": "LA",
+    "rating": 5,
+    "text": "Amazing experience, highly recommend!",
+    "date": "2025-10-04"
+  },
+  {
+    "id": "102",
+    "location": "Chicago",
+    "rating": 3,
+    "text": "Food was okay, nothing special but decent for the price.",
+    "date": "2025-10-03"
+  },
+  {
+    "id": "103",
+    "location": "Miami",
+    "rating": 5,
+    "text": "Outstanding seafood and excellent atmosphere! Perfect for date night.",
+    "date": "2025-10-02"
+  },
+  {
+    "id": "104",
+    "location": "Seattle",
+    "rating": 2,
+    "text": "Service was slow and the food arrived cold. Very disappointing experience.",
+    "date": "2025-10-01"
+  },
+  {
+    "id": "105",
+    "location": "Austin",
+    "rating": 4,
+    "text": "Great BBQ and live music! The brisket was perfectly smoked.",
+    "date": "2025-09-30"
+  },
+  {
+    "id": "106",
+    "location": "Denver",
+    "rating": 5,
+    "text": "Best pizza in town! Crispy crust and fresh toppings.",
+    "date": "2025-09-29"
+  },
+  {
+    "id": "107",
+    "location": "Boston",
+    "rating": 1,
+    "text": "Terrible experience. Food was undercooked and staff was rude.",
+    "date": "2025-09-28"
+  },
+  {
+    "id": "108",
+    "location": "San Francisco",
+    "rating": 4,
+    "text": "Innovative dishes and great presentation. Loved the fusion cuisine!",
+    "date": "2025-09-27"
+  },
+  {
+    "id": "109",
+    "location": "Las Vegas",
+    "rating": 3,
+    "text": "Average buffet food. Good variety but quality could be better.",
+    "date": "2025-09-26"
+  },
+  {
+    "id": "110",
+    "location": "Phoenix",
+    "rating": 5,
+    "text": "Authentic Mexican cuisine! The tacos were incredible and service was fast.",
+    "date": "2025-09-25"
+  },
+  {
+    "id": "111",
+    "location": "Portland",
+    "rating": 4,
+    "text": "Great coffee shop with excellent pastries. Perfect for morning meetings.",
+    "date": "2025-09-24"
+  },
+  {
+    "id": "112",
+    "location": "Atlanta",
+    "rating": 2,
+    "text": "Overpriced for the portion size. Expected much more for what we paid.",
+    "date": "2025-09-23"
+  },
+  {
+    "id": "113",
+    "location": "Dallas",
+    "rating": 5,
+    "text": "Five-star steakhouse experience! Perfectly cooked ribeye and impeccable service.",
+    "date": "2025-09-22"
+  },
+  {
+    "id": "114",
+    "location": "Nashville",
+    "rating": 4,
+    "text": "Great Southern comfort food and live country music. Authentic Nashville experience!",
+    "date": "2025-09-21"
+  },
+  {
+    "id": "115",
+    "location": "Minneapolis",
+    "rating": 3,
+    "text": "Decent food but the restaurant was quite noisy. Hard to have conversation.",
+    "date": "2025-09-20"
+  },
+  {
+    "id": "116",
+    "location": "Orlando",
+    "rating": 4,
+    "text": "Family-friendly restaurant with great kids menu. Staff was very accommodating.",
+    "date": "2025-09-19"
+  },
+  {
+    "id": "117",
+    "location": "San Diego",
+    "rating": 5,
+    "text": "Amazing fish tacos and ocean view! Perfect beachside dining experience.",
+    "date": "2025-09-18"
+  },
+  {
+    "id": "118",
+    "location": "Tampa",
+    "rating": 2,
+    "text": "Food took too long to arrive and wasn't worth the wait. Poor kitchen timing.",
+    "date": "2025-09-17"
+  },
+  {
+    "id": "119",
+    "location": "Charlotte",
+    "rating": 4,
+    "text": "Solid brunch spot with great mimosas and friendly atmosphere.",
+    "date": "2025-09-16"
+  }
+]

@@ -1,0 +1,48 @@
+### Health Check
+GET http://localhost:8000/health
+
+### Variables
+@baseUrl = http://localhost:8000
+@apiKey = your-api-key
+
+### Ingest Reviews
+POST {{baseUrl}}/ingest
+Content-Type: application/json
+x-api-key: {{apiKey}}
+
+[
+  {
+    "location": "Bangalore",
+    "rating": 5,
+    "text": "Amazing food and service!",
+    "date": "2025-10-07"
+  },
+  {
+    "location": "Delhi",
+    "rating": 2,
+    "text": "Very slow delivery and bad taste.",
+    "date": "2025-10-06"
+  }
+]
+
+### Get All Reviews
+GET {{baseUrl}}/reviews?page=1&pagesize=10
+
+### Get Reviews by Location
+GET {{baseUrl}}/reviews?location=Bangalore
+
+### Get Reviews by Sentiment
+GET {{baseUrl}}/reviews?sentiment=POSITIVE
+
+### Search Similar Reviews
+GET {{baseUrl}}/search?q=great+service&k=3
+
+### Get Review by ID
+GET {{baseUrl}}/reviews/1
+
+### Suggest AI Reply for a Review
+POST {{baseUrl}}/reviews/1/suggest-reply
+Content-Type: application/json
+
+### Get Analytics Data
+GET {{baseUrl}}/analytics

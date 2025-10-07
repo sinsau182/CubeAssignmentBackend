@@ -64,8 +64,30 @@ async def shutdown():
 
 @app.post("/ingest", dependencies=[Depends(check_api_key)])
 async def ingest(reviews: List[ReviewIn], db: RealDB = Depends(get_db)):
-    for r in reviews:
-        await db.add_review(r)
+    for i, r in enumerate(reviews):
+        # Check if review has a unique ID
+        if r.id is None:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Review at index {i} is missing required 'id' field. Each review must have a unique ID."
+            )
+        
+        try:
+            await db.add_review(r)
+        except Exception as e:
+            # Handle database constraint errors (e.g., duplicate ID)
+            if "UNIQUE constraint failed" in str(e) or "duplicate key" in str(e).lower():
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Review with ID {r.id} already exists. Each review must have a unique ID."
+                )
+            else:
+                # Re-raise other database errors
+                raise HTTPException(
+                    status_code=500,
+                    detail=f"Failed to insert review with ID {r.id}: {str(e)}"
+                )
+    
     return {"ingested": len(reviews)}
 
 @app.get("/reviews")
@@ -156,8 +178,7 @@ if __name__ == "__main__":
     # Use PORT environment variable (required by Render, Railway, etc.)
     port = int(os.getenv("PORT", 8000))
     host = os.getenv("HOST", "0.0.0.0")
-    
-    print(f"🚀 Starting server on {host}:{port}")
+
     uvicorn.run(
         "main:app",
         host=host,

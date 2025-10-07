@@ -1,11 +1,11 @@
-# Core FastAPI Application Dependencies  
-# Optimized for deployment - removed unnecessary heavy packages
+# Optimized requirements for Ubuntu deployment
+# Install PyTorch CPU-only first: pip install torch --index-url https://download.pytorch.org/whl/cpu
 
-# Web Framework
+# Core FastAPI Application
 fastapi==0.118.0
 uvicorn==0.37.0
 
-# HTTP Client for external API calls
+# HTTP Client
 httpx==0.28.1
 
 # Database
@@ -17,13 +17,14 @@ aiosqlite==0.21.0
 pydantic==2.11.9
 
 # Machine Learning (lightweight)
-scikit-learn==1.7.2  # For TF-IDF search functionality
-numpy==2.3.3         # Required by scikit-learn
+scikit-learn==1.7.2
+numpy==2.3.3
 
-# PyTorch-based AI Sentiment Analysis (CPU-only, space optimized)
-# Note: Install CPU version with: pip install torch --index-url https://download.pytorch.org/whl/cpu
-torch>=2.0.0         # PyTorch CPU-only (~200MB vs 2GB GPU version)
-transformers>=4.53.0 # Hugging Face transformers for DistilBERT sentiment model
+# AI Sentiment Analysis (CPU-only)
+transformers>=4.53.0
 
 # Environment Configuration
 python-dotenv==1.1.1
+
+# PyTorch (CPU-only)
+torch --index-url https://download.pytorch.org/whl/cpu
