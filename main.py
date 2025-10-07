@@ -71,7 +71,6 @@ async def ingest(reviews: List[ReviewIn], db: RealDB = Depends(get_db)):
                 status_code=400, 
                 detail=f"Review at index {i} is missing required 'id' field. Each review must have a unique ID."
             )
-        
         try:
             await db.add_review(r)
         except Exception as e:
